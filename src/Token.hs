@@ -1,7 +1,8 @@
 module Token where
 
+import Data.Char (isLetter)
 
-type AnalisadorLexico = String -> [Token]
+type AnalyseLex = String -> [Token]
 
 data Token = Invalido -- Token Invalido
     | EOF             -- Fim do Arquivo
@@ -15,8 +16,8 @@ data Token = Invalido -- Token Invalido
     | Slash           -- Operador de divisao
     | LessThan        -- Operador de menor
     | GreaterThan     -- Operador de maior
-    | True            -- Boolean true
-    | False           -- Boolean false
+    | TokTrue         -- Boolean true
+    | TokFalse        -- Boolean false
     | Equal           -- Operador de igualdade
     | NotEqual        -- Operador de desigualdade
     | Comma           -- Operador de virgula
@@ -31,3 +32,16 @@ data Token = Invalido -- Token Invalido
     | Else            -- Palavra-chave else
     | Return          -- Palavra-chave return
     deriving (Show, Eq, Ord)
+
+identChar :: Char -> Bool
+identChar char = isLetter char || char == '_'
+
+identToken :: String -> Token
+identToken "true"  = TokTrue
+identToken "false" = TokFalse
+identToken "fn"    = Function
+identToken "let"   = Let
+identToken "if"    = If
+identToken "else"  = Else
+identToken "return" = Return
+identToken x = Ident x
