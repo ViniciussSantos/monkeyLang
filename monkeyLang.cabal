@@ -25,7 +25,9 @@ source-repository head
 
 library
   exposed-modules:
+      Lexer.Lexer
       Lib
+      Token
   other-modules:
       Paths_monkeyLang
   hs-source-dirs:

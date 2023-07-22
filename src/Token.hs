@@ -2,9 +2,10 @@ module Token where
 
 import Data.Char (isLetter)
 
-type AnalyseLex = String -> [Token]
+type Tokenizer = String -> [Token]
 
-data Token = Invalido -- Token Invalido
+data Token = 
+      Illegal         -- Token Invalido
     | EOF             -- Fim do Arquivo
     | Ident String    -- Indetificadores
     | Int String      -- Numeros inteiros
@@ -22,10 +23,10 @@ data Token = Invalido -- Token Invalido
     | NotEqual        -- Operador de desigualdade
     | Comma           -- Operador de virgula
     | Semicolon       -- Operador de ponto e vigula
-    | LP              -- Parentese esquerdo
-    | RP              -- Parentese direito
-    | LC              -- Chave esquerdo
-    | RC              -- Chave direito
+    | LParen          -- Parentese esquerdo
+    | RParen          -- Parentese direito
+    | LBrace          -- Chave esquerdo
+    | RBrace          -- Chave direito
     | Function        -- Palavra-chave funcion
     | Let             -- Palavra-chave let
     | If              -- Palavra-chave if
@@ -33,9 +34,12 @@ data Token = Invalido -- Token Invalido
     | Return          -- Palavra-chave return
     deriving (Show, Eq, Ord)
 
+
+-- Verifica se é um caractere
 identChar :: Char -> Bool
 identChar char = isLetter char || char == '_'
 
+-- Verifica token
 identToken :: String -> Token
 identToken "true"  = TokTrue
 identToken "false" = TokFalse
