@@ -1,7 +1,15 @@
 {-# LANGUAGE ImportQualifiedPost #-}
 {-# LANGUAGE RecordWildCards #-}
 
-module Lexer.Lexer where
+module Lexer.Lexer (
+  tokenize,
+  newLexer,
+  nextToken,
+  Lexer (..),
+  Input,
+
+
+    )where
 
 import Data.ByteString.Char8 (ByteString)
 import Data.ByteString.Char8 qualified as B

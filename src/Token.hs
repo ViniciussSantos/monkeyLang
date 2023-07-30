@@ -1,4 +1,10 @@
-module Token where
+module Token
+  ( Tokenizer,
+    Token (..),
+    isIdentifierChar,
+    identifierToken,
+  )
+where
 
 import Data.Char (isLetter)
 
