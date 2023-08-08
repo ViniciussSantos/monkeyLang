@@ -37,6 +37,7 @@ library
   build-depends:
       base >=4.7 && <5
     , bytestring >=0.11.4.0
+    , megaparsec
     , tasty
     , tasty-hunit
   default-language: Haskell2010
@@ -51,6 +52,7 @@ executable monkeyLang-exe
   build-depends:
       base >=4.7 && <5
     , bytestring >=0.11.4.0
+    , megaparsec
     , monkeyLang
     , tasty
     , tasty-hunit
@@ -67,6 +69,7 @@ test-suite monkeyLang-test
   build-depends:
       base >=4.7 && <5
     , bytestring >=0.11.4.0
+    , megaparsec
     , monkeyLang
     , tasty
     , tasty-hunit
