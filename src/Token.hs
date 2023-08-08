@@ -1,9 +1,9 @@
-module Token
-  ( Tokenizer,
-    Token (..),
-    isIdentifierChar,
-    identifierToken,
-  )
+module Token (
+  Tokenizer,
+  Token (..),
+  isIdentifierChar,
+  identifierToken,
+)
 where
 
 import Data.Char (isLetter)
@@ -56,3 +56,4 @@ identifierToken "if" = If
 identifierToken "else" = Else
 identifierToken "return" = Return
 identifierToken x = Ident x
+

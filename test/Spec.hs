@@ -23,6 +23,6 @@ tokenizerTests =
     , testCase "integers" (assertEqual "should be [Int \"1\", Int \"2\", EOF]" [Int "12", EOF] (tokenize "12"))
     , testCase "booleans" (assertEqual "should be [TokTrue, TokFalse, EOF]" [TokTrue, TokFalse, EOF] (tokenize "true false"))
     , testCase "if else" (assertEqual "should be [If, Else, EOF]" [If, Else, EOF] (tokenize "if else"))
-    , testCase "return" (assertEqual "should be [Return, EOF]" [Return, EOF] (tokenize "return"))
+    , testCase "return"  (assertEqual "should be [Return, EOF]" [Return, EOF] (tokenize "return"))
     , testCase "function" (assertEqual "should be [Function, EOF]" [Function, EOF] (tokenize "fn"))
     ]
