@@ -28,6 +28,7 @@ library
       Ast
       Lexer.Lexer
       Lib
+      Parser.Parser
       Token
   other-modules:
       Paths_monkeyLang
