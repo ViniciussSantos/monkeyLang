@@ -29,7 +29,7 @@ data Token
   | Equal -- Operador de igualdade
   | NotEqual -- Operador de desigualdade
   | Comma -- Operador de virgula
-  | Semicolon -- Operador de ponto e vigula
+  | Semicolon -- Operador de ponto e virgula
   | LParen -- Parentese esquerdo
   | RParen -- Parentese direito
   | LBrace -- Chave esquerdo
@@ -56,4 +56,3 @@ identifierToken "if" = If
 identifierToken "else" = Else
 identifierToken "return" = Return
 identifierToken x = Ident x
-
