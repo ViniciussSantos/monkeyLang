@@ -1,10 +1,12 @@
 module Ast (
-  Ast,
-  Program,
+  Program (..),
   Statement (..),
   Expression (..),
+  Block (..),
   Identifier (..),
-) where
+  Ast,
+)
+where
 
 import Token (Token)
 
