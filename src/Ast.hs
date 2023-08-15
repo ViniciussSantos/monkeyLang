@@ -17,7 +17,7 @@ data Statement
   = LetStatement Identifier Expression
   | ReturnStatement Expression
   | ExpressionStatement Expression
-  | BlockStatement [Statement]
+  | BlockStatement Block
   | IllegalStatement
   deriving (Eq, Show)
 
@@ -30,7 +30,9 @@ data Expression
   | IfExpression Expression [Statement] (Maybe [Statement])
   | FunctionExpression [Identifier] [Statement]
   | CallExpression Expression [Expression]
-  | IllegalExpression
+  deriving (Eq, Show)
+
+newtype Block = Block [Statement]
   deriving (Eq, Show)
 
 newtype Identifier = Identifier String
