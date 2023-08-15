@@ -1,6 +1,8 @@
 module Main (main) where
 
+import Ast (Program)
 import Lexer.Lexer (tokenize)
+import Parser.Parser (parsing)
 import System.IO (hFlush, stdout)
 
 prompt :: String -> IO String
@@ -9,7 +11,9 @@ prompt what = do
   hFlush stdout
   getLine
 
+interpret :: String -> Program
+interpret = parsing . tokenize
 main :: IO ()
 main = do
   expression <- prompt ">> "
-  print (tokenize expression)
+  print $ interpret expression

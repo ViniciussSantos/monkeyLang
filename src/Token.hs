@@ -1,9 +1,9 @@
-module Token
-  ( Tokenizer,
-    Token (..),
-    isIdentifierChar,
-    identifierToken,
-  )
+module Token (
+  Tokenizer,
+  Token (..),
+  isIdentifierChar,
+  identifierToken,
+)
 where
 
 import Data.Char (isLetter)
@@ -29,7 +29,7 @@ data Token
   | Equal -- Operador de igualdade
   | NotEqual -- Operador de desigualdade
   | Comma -- Operador de virgula
-  | Semicolon -- Operador de ponto e vigula
+  | Semicolon -- Operador de ponto e virgula
   | LParen -- Parentese esquerdo
   | RParen -- Parentese direito
   | LBrace -- Chave esquerdo
