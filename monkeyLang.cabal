@@ -26,6 +26,8 @@ source-repository head
 library
   exposed-modules:
       Ast
+      Eval.Eval
+      Eval.Object
       Lexer.Lexer
       Lib
       Parser.Parser
