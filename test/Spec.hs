@@ -4,6 +4,7 @@ import Parser.Parser (parsing)
 import Test.Tasty (TestTree, defaultMain, testGroup)
 import Test.Tasty.HUnit (assertEqual, testCase)
 import Token (Token (..))
+import Eval.Eval (eval)
 
 main :: IO ()
 main = do
@@ -42,3 +43,10 @@ parsingTests =
     , testCase "parse function with if" (assertEqual "arroz" (Program [ExpressionStatement (CallExpression (FunctionExpression [Identifier "x", Identifier "y"] (Block [ExpressionStatement (IfExpression (BooleanLiteral True) (Block [ExpressionStatement (IdentifierExpression (Identifier "x"))]) (Just (Block [ExpressionStatement (IdentifierExpression (Identifier "x"))])))])) [IntLiteral 1, IntLiteral 2])]) (parsing [Function, LParen, Ident "x", Comma, Ident "y", RParen, LBrace, If, LParen, TokTrue, RParen, LBrace, Ident "x", RBrace, Else, LBrace, Ident "x", RBrace, RBrace, LParen, Int "1", Comma, Int "2", RParen, Semicolon, EOF]))
     , testCase "parse arithmetic expression" (assertEqual "arithmetic" (Program [ExpressionStatement (AddExpression (IntLiteral 1) (DivExpression (MulExpression (IntLiteral 2) (IntLiteral 3)) (IntLiteral 4)))]) (parsing [Int "1", Plus, Int "2", Asterisk, Int "3", Slash, Int "4", Semicolon, EOF]))
     ]
+
+evalTests :: TestTree    
+evalTests = 
+  testGroup 
+    "eval"
+    [testCase "eval a number" (assertEqual "should be 1" (IntLiteral 1) (eval (IntLiteral 1)))]
+    
