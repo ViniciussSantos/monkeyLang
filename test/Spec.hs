@@ -1,4 +1,5 @@
 import Ast (Block (..), Expression (..), Identifier (..), Program (Program), Statement (..))
+import Eval.Eval (eval)
 import Lexer.Lexer (tokenize)
 import Parser.Parser (parsing)
 import Test.Tasty (TestTree, defaultMain, testGroup)
@@ -11,7 +12,7 @@ main = do
   defaultMain tests
 
 tests :: TestTree
-tests = testGroup "Tests" [tokenizerTests, parsingTests]
+tests = testGroup "Tests" [tokenizerTests, parsingTests, evalTests]
 
 tokenizerTests :: TestTree
 tokenizerTests =
@@ -44,9 +45,27 @@ parsingTests =
     , testCase "parse arithmetic expression" (assertEqual "arithmetic" (Program [ExpressionStatement (AddExpression (IntLiteral 1) (DivExpression (MulExpression (IntLiteral 2) (IntLiteral 3)) (IntLiteral 4)))]) (parsing [Int "1", Plus, Int "2", Asterisk, Int "3", Slash, Int "4", Semicolon, EOF]))
     ]
 
-evalTests :: TestTree    
-evalTests = 
-  testGroup 
+interpret :: String -> String
+interpret = show . eval . parsing . tokenize
+
+evalTests :: TestTree
+evalTests =
+  testGroup
     "eval"
-    [testCase "eval a number" (assertEqual "should be 1" (IntLiteral 1) (eval (IntLiteral 1)))]
-    
+    [ testCase "eval integer" (assertEqual "should be 1" "1" (interpret "1;"))
+    , testCase "eval + operator" (assertEqual "should be 3" "3" (interpret "1+2;"))
+    , testCase "eval - operator" (assertEqual "should be 1" "1" (interpret "2-1;"))
+    , testCase "eval * operator" (assertEqual "should be 6" "6" (interpret "2*3;"))
+    , testCase "eval / operator" (assertEqual "should be 2" "2" (interpret "6/3;"))
+    , testCase "eval arithmetic expression" (assertEqual "should be 7" "7" (interpret "1+2*3;"))
+    , testCase "eval arithmetic expression" (assertEqual "should be 9" "9" (interpret "(1+2)*3;"))
+    , testCase "eval arithmetic expression" (assertEqual "should be 16" "16" (interpret "(8/2)*(2+2);"))
+    , testCase "eval true" (assertEqual "should be true" "true" (interpret "true;"))
+    , testCase "eval false" (assertEqual "should be false" "false" (interpret "false;"))
+    , testCase "eval < boolean expression" (assertEqual "should be true" "true" (interpret "1<2;"))
+    , testCase "eval > boolean expression" (assertEqual "should be false" "false" (interpret "1>2;"))
+    , testCase "eval == boolean expression" (assertEqual "should be true" "true" (interpret "1==1;"))
+    , testCase "eval != boolean expression" (assertEqual "should be false" "false" (interpret "1!=1;"))
+    , testCase "eval true == true boolean expression" (assertEqual "should be true" "true" (interpret "true==true;"))
+    , testCase "eval true != true boolean expression" (assertEqual "should be false" "false" (interpret "true!=true;"))
+    ]

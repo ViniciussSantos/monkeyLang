@@ -3,6 +3,7 @@
 module Eval.Object where
 
 import Ast (Program)
+import Data.Char (toLower)
 
 type Eval = Program -> String
 
@@ -10,17 +11,17 @@ data ObjectType
   = IntLit Integer
   | Boolean Bool
   | Null
-  deriving (Eq, Show)
+  deriving (Eq)
 
 newtype Object = Object
   { objectType :: ObjectType
   }
-  deriving (Eq, Show)
+  deriving (Eq)
 
-inspect :: Object -> String
-inspect Object{..} =
-  case objectType of
-    IntLit i -> show i
-    Boolean b -> show b
-    Null -> "null"
-    otherwise -> "unknown"
+instance Show ObjectType where
+  show (IntLit i) = show i
+  show (Boolean b) = map toLower (show b)
+  show Null = "null"
+
+instance Show Object where
+  show (Object objType) = show objType
