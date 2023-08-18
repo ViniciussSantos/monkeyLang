@@ -1,11 +1,10 @@
 module Main (main) where
 
-import Ast (Program)
 import Eval.Eval (eval)
-import Eval.Object (inspect)
 import Lexer.Lexer (tokenize)
 import Parser.Parser (parsing)
 import System.IO (hFlush, stdout)
+import Eval.Object (Object)
 
 prompt :: String -> IO String
 prompt what = do
@@ -13,7 +12,9 @@ prompt what = do
   hFlush stdout
   getLine
 
-interpret = inspect . eval . parsing . tokenize
+interpret :: String -> String
+interpret = show . eval . parsing . tokenize
+
 main :: IO ()
 main = do
   expression <- prompt ">> "
