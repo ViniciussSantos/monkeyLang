@@ -45,12 +45,20 @@ evalInfixExpression operator left right = case (left, right) of
     _ -> Object Null
   _ -> Object Null
 
+concatExpression :: Expression -> Expression -> Object
+concatExpression left right = case (evalExpression left, evalExpression right) of
+  (Object (StringLit left'), Object (StringLit right')) ->
+    Object (StringLit (left' ++ right'))  -- Concatenação de strings
+  _ -> Object Null
+
 evalExpression :: Expression -> Object
 evalExpression expr = case expr of
   IntLiteral value -> Object (IntLit value)
   BooleanLiteral value -> Object (Boolean value)
+  StringLiteral value -> Object (StringLit value)
   NotExpression e -> evalPrefixExpression "!" (evalExpression e)
   NegateExpression e -> evalPrefixExpression "-" (evalExpression e)
+  ConcatExpression left right -> concatExpression left right  -- Concatenação de Stringd
   AddExpression left right -> evalInfixExpression "+" (evalExpression left) (evalExpression right)
   SubExpression left right -> evalInfixExpression "-" (evalExpression left) (evalExpression right)
   MulExpression left right -> evalInfixExpression "*" (evalExpression left) (evalExpression right)

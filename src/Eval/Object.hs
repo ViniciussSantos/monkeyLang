@@ -10,6 +10,7 @@ type Eval = Program -> String
 data ObjectType
   = IntLit Integer
   | Boolean Bool
+  | StringLit String
   | Null
   deriving (Eq)
 
@@ -21,6 +22,7 @@ newtype Object = Object
 instance Show ObjectType where
   show (IntLit i) = show i
   show (Boolean b) = map toLower (show b)
+  show (StringLit s) = show s
   show Null = "null"
 
 instance Show Object where

@@ -39,6 +39,7 @@ data Token
   | If -- Palavra-chave if
   | Else -- Palavra-chave else
   | Return -- Palavra-chave return
+  | String 
   deriving (Show, Eq, Ord)
 
 -- Verifica se é um caractere de identificador

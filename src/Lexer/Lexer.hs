@@ -73,6 +73,7 @@ nextToken lexer = (token, lexer'')
           && peek lexer' == Just '='
           then (Equal, advance $ advance lexer')
           else (Attrib, advance lexer')
+      '"' -> readStringToken lexer'
       '\0' -> (EOF, lexer')
       c
         | isIdentifierChar c ->
@@ -106,6 +107,22 @@ skipSpace = skipWhile isSpace
 -- Lê um identificador
 readIdentifier :: Lexer -> (String, Lexer)
 readIdentifier = readWhile isIdentifierChar
+
+-- Lê uma String
+readStringToken :: Lexer -> (Token, Lexer)
+readStringToken lexer@Lexer{..} =
+  let (str, lexer') = readString lexer
+  in (String, lexer')
+
+readString :: Lexer -> (String, Lexer)
+readString lexer@Lexer{..} =
+  let position = position + 1
+      lexer' = advance lexer
+  in
+    case peek lexer' of
+      Just '"' -> (B.unpack $ B.take (position - readPosition - 1) $ B.drop readPosition input, advance $ advance lexer')
+      Just _ -> readString lexer'
+      Nothing -> ("", lexer')
 
 -- Lê um inteiro
 readInt :: Lexer -> (String, Lexer)
