@@ -68,12 +68,12 @@ nextToken lexer = (token, lexer'')
       '<' -> (LessThan, advance lexer')
       '*' -> (Asterisk, advance lexer')
       '/' -> (Slash, advance lexer')
+      '"' -> let (str, lexer') = readString lexer in (Str str, advance lexer')
       '=' ->
         if isJust (peek lexer')
           && peek lexer' == Just '='
           then (Equal, advance $ advance lexer')
           else (Attrib, advance lexer')
-      '"' -> readStringToken lexer'
       '\0' -> (EOF, lexer')
       c
         | isIdentifierChar c ->
@@ -108,22 +108,6 @@ skipSpace = skipWhile isSpace
 readIdentifier :: Lexer -> (String, Lexer)
 readIdentifier = readWhile isIdentifierChar
 
--- Lê uma String
-readStringToken :: Lexer -> (Token, Lexer)
-readStringToken lexer@Lexer{..} =
-  let (str, lexer') = readString lexer
-  in (String, lexer')
-
-readString :: Lexer -> (String, Lexer)
-readString lexer@Lexer{..} =
-  let position = position + 1
-      lexer' = advance lexer
-  in
-    case peek lexer' of
-      Just '"' -> (B.unpack $ B.take (position - readPosition - 1) $ B.drop readPosition input, advance $ advance lexer')
-      Just _ -> readString lexer'
-      Nothing -> ("", lexer')
-
 -- Lê um inteiro
 readInt :: Lexer -> (String, Lexer)
 readInt = readWhile isDigit
@@ -141,3 +125,7 @@ skipWhile :: (Char -> Bool) -> Lexer -> Lexer
 skipWhile predicate lexer@Lexer{..}
   | predicate currentChar = skipWhile predicate $ advance lexer
   | otherwise = lexer
+
+-- Lê uma string delimitada por aspas duplas
+readString :: Lexer -> (String, Lexer)
+readString lexer@Lexer{..} = readWhile (/= '"') (advance lexer)

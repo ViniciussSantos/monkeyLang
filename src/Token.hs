@@ -16,6 +16,7 @@ data Token
   | EOF -- Fim do Arquivo
   | Ident String -- Indetificadores
   | Int String -- Numeros inteiros
+  | Str String
   | Attrib -- Operador de atribuicao
   | Plus -- Operador de adicao
   | Minus -- Operador de subtracao
@@ -39,7 +40,6 @@ data Token
   | If -- Palavra-chave if
   | Else -- Palavra-chave else
   | Return -- Palavra-chave return
-  | String 
   deriving (Show, Eq, Ord)
 
 -- Verifica se é um caractere de identificador

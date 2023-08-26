@@ -11,6 +11,7 @@ import Ast (
  )
 import Control.Monad.Combinators.Expr (Operator (..), makeExprParser)
 import Data.Void (Void)
+import Text.Megaparsec.Char (string)
 import Text.Megaparsec (
   Parsec,
   anySingle,
@@ -23,8 +24,9 @@ import Text.Megaparsec (
   sepBy,
   sepEndBy,
   withRecovery,
-  (<|>),
- )
+  (<|>), 
+ ) 
+
 import Token (
   Token (..),
  )
@@ -61,6 +63,7 @@ parseTerm =
   choice
     [ IntLiteral . read <$> parseInteger
     , BooleanLiteral <$> parseBool
+    , parseString
     , IdentifierExpression <$> (Identifier <$> parseIdentifier)
     , parens parseExpression
     , parseIf
@@ -174,3 +177,14 @@ brackets = between (parseToken LBrace) (parseToken RBrace)
 -- faz parse de algo entre parenteses
 parens :: Parser a -> Parser a
 parens = between (parseToken LParen) (parseToken RParen)
+
+
+parseString :: Parser Expression
+parseString =  do
+  result <- satisfy isString
+  case result of
+    (Str str) -> return $ StringLiteral str
+    _ -> fail "Expected StringLiteral"
+ where
+  isString (Str _) = True
+  isString _ = False

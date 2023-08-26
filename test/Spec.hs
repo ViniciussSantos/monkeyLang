@@ -68,4 +68,5 @@ evalTests =
     , testCase "eval != boolean expression" (assertEqual "should be false" "false" (interpret "1!=1;"))
     , testCase "eval true == true boolean expression" (assertEqual "should be true" "true" (interpret "true==true;"))
     , testCase "eval true != true boolean expression" (assertEqual "should be false" "false" (interpret "true!=true;"))
+    , testCase "eval string" (assertEqual "should be \"hello\"" "\"hello\"" (interpret "\"hello\";"))
     ]
