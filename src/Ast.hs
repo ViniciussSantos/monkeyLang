@@ -26,7 +26,9 @@ data Statement
 data Expression
   = IntLiteral Integer
   | BooleanLiteral Bool
+  | StringLiteral String
   | IdentifierExpression Identifier
+  | ConcatExpression Expression Expression
   | AddExpression Expression Expression
   | SubExpression Expression Expression
   | MulExpression Expression Expression

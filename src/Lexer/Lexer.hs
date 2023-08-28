@@ -68,6 +68,7 @@ nextToken lexer = (token, lexer'')
       '<' -> (LessThan, advance lexer')
       '*' -> (Asterisk, advance lexer')
       '/' -> (Slash, advance lexer')
+      '"' -> let (str, lexer') = readString lexer in (Str str, advance lexer')
       '=' ->
         if isJust (peek lexer')
           && peek lexer' == Just '='
@@ -124,3 +125,21 @@ skipWhile :: (Char -> Bool) -> Lexer -> Lexer
 skipWhile predicate lexer@Lexer{..}
   | predicate currentChar = skipWhile predicate $ advance lexer
   | otherwise = lexer
+
+readString :: Lexer -> (String, Lexer)
+readString lexer =
+  case peek lexer of
+    Just '"' -> ("", advance lexer)  -- Empty string
+    _ -> readStringLoop lexer ""
+
+readStringLoop :: Lexer -> String -> (String, Lexer)
+readStringLoop lexer acc =
+  case peek lexer of
+    Just '"' -> (reverse acc, advance lexer) -- End of string
+    Just c -> readStringLoop (advance lexer) (c : acc)
+    _ -> (reverse acc, lexer) -- End of input 
+
+
+
+
+

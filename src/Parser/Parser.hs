@@ -11,6 +11,7 @@ import Ast (
  )
 import Control.Monad.Combinators.Expr (Operator (..), makeExprParser)
 import Data.Void (Void)
+import Text.Megaparsec.Char (string)
 import Text.Megaparsec (
   Parsec,
   anySingle,
@@ -24,10 +25,14 @@ import Text.Megaparsec (
   sepEndBy,
   withRecovery,
   (<|>),
+  many,
+  try,
  )
+
 import Token (
   Token (..),
  )
+import Eval.Object (ObjectType(StringLit))
 
 type Parser = Parsec Void [Token]
 
@@ -61,6 +66,7 @@ parseTerm =
   choice
     [ IntLiteral . read <$> parseInteger
     , BooleanLiteral <$> parseBool
+    , parseString
     , IdentifierExpression <$> (Identifier <$> parseIdentifier)
     , parens parseExpression
     , parseIf
@@ -97,6 +103,9 @@ parseExpression = makeExprParser parseTerm table
       , binary (parseToken NotEqual) InequalityExpression
       , binary (parseToken LessThan) LessThanExpression
       , binary (parseToken GreaterThan) GreaterThanExpression
+      ]
+    , -- concatanation operator
+      [ binary (parseToken Plus) ConcatExpression
       ]
     ]
   binary :: (Functor m) => m b -> (a -> a -> a) -> Operator m a
@@ -174,3 +183,14 @@ brackets = between (parseToken LBrace) (parseToken RBrace)
 -- faz parse de algo entre parenteses
 parens :: Parser a -> Parser a
 parens = between (parseToken LParen) (parseToken RParen)
+
+
+parseString :: Parser Expression
+parseString =  do
+  result <- satisfy isString
+  case result of
+    (Str str) -> return $ StringLiteral str
+    _ -> fail "Expected StringLiteral"
+ where
+  isString (Str _) = True
+  isString _ = False 
