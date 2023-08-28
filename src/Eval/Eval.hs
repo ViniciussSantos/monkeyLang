@@ -1,7 +1,7 @@
 module Eval.Eval where
 
-import Ast (Block (..), Expression (..), Program (..), Statement (..))
 import Eval.Object (Object (..), ObjectType (..))
+import Parser.Ast (Block (..), Expression (..), Program (..), Statement (..))
 
 eval :: Program -> Object
 eval (Program statements) = evalStatements statements

@@ -1,16 +1,11 @@
-module Ast (
+module Parser.Ast (
   Program (..),
   Statement (..),
   Expression (..),
   Block (..),
   Identifier (..),
-  Ast,
 )
 where
-
-import Token (Token)
-
-type Ast = [Token] -> Program
 
 newtype Program = Program [Statement]
   deriving (Eq, Show)

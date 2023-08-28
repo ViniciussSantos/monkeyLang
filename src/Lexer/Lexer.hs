@@ -13,7 +13,7 @@ import Data.ByteString.Char8 (ByteString)
 import Data.ByteString.Char8 qualified as B
 import Data.Char (isDigit, isSpace)
 import Data.Maybe (fromMaybe, isJust)
-import Token (Token (..), Tokenizer, identifierToken, isIdentifierChar)
+import Lexer.Token (Token (..), identifierToken, isIdentifierChar)
 
 -- usado por performance
 type Input = ByteString
@@ -27,7 +27,7 @@ data Lexer = Lexer
   }
 
 -- Tokeniza a entrada
-tokenize :: Tokenizer
+tokenize :: String -> [Token]
 tokenize = go . advance . newLexer . B.pack
  where
   go lexer = case nextToken lexer of

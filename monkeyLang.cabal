@@ -25,13 +25,12 @@ source-repository head
 
 library
   exposed-modules:
-      Ast
       Eval.Eval
       Eval.Object
       Lexer.Lexer
-      Lib
+      Lexer.Token
+      Parser.Ast
       Parser.Parser
-      Token
   other-modules:
       Paths_monkeyLang
   hs-source-dirs:
