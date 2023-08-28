@@ -100,6 +100,7 @@ advance lexer@Lexer{..} =
     , currentChar = fromMaybe '\0' $ peek lexer
     }
 
+
 -- Pula os espaços em branco
 skipSpace :: Lexer -> Lexer
 skipSpace = skipWhile isSpace
