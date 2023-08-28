@@ -2,10 +2,7 @@
 
 module Eval.Object where
 
-import Ast (Program)
 import Data.Char (toLower)
-
-type Eval = Program -> String
 
 data ObjectType
   = IntLit Integer
