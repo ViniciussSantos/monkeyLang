@@ -126,6 +126,20 @@ skipWhile predicate lexer@Lexer{..}
   | predicate currentChar = skipWhile predicate $ advance lexer
   | otherwise = lexer
 
--- Lê uma string delimitada por aspas duplas
 readString :: Lexer -> (String, Lexer)
-readString lexer@Lexer{..} = readWhile (/= '"') (advance lexer)
+readString lexer =
+  case peek lexer of
+    Just '"' -> ("", advance lexer)  -- Empty string
+    _ -> readStringLoop lexer ""
+
+readStringLoop :: Lexer -> String -> (String, Lexer)
+readStringLoop lexer acc =
+  case peek lexer of
+    Just '"' -> (reverse acc, advance lexer) -- End of string
+    Just c -> readStringLoop (advance lexer) (c : acc)
+    _ -> (reverse acc, lexer) -- End of input 
+
+
+
+
+

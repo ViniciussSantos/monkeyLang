@@ -16,7 +16,7 @@ data Token
   | EOF -- Fim do Arquivo
   | Ident String -- Indetificadores
   | Int String -- Numeros inteiros
-  | Str String
+  | Str String -- Strings
   | Attrib -- Operador de atribuicao
   | Plus -- Operador de adicao
   | Minus -- Operador de subtracao

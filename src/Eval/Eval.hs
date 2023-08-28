@@ -43,6 +43,9 @@ evalInfixExpression operator left right = case (left, right) of
     "==" -> Object (Boolean (left' == right'))
     "!=" -> Object (Boolean (left' /= right'))
     _ -> Object Null
+  (Object (StringLit left'), Object (StringLit right')) -> case operator of
+    "+" -> Object (StringLit (left' ++ right'))
+    _ -> Object Null 
   _ -> Object Null
 
 evalExpression :: Expression -> Object
@@ -51,6 +54,7 @@ evalExpression expr = case expr of
   BooleanLiteral value -> Object (Boolean value)
   StringLiteral value -> Object (StringLit value)
   NotExpression e -> evalPrefixExpression "!" (evalExpression e)
+  ConcatExpression left right -> evalInfixExpression "+" (evalExpression left) (evalExpression right)
   NegateExpression e -> evalPrefixExpression "-" (evalExpression e)
   AddExpression left right -> evalInfixExpression "+" (evalExpression left) (evalExpression right)
   SubExpression left right -> evalInfixExpression "-" (evalExpression left) (evalExpression right)
@@ -69,3 +73,8 @@ evalExpression expr = case expr of
   IfExpression e block (Just (Block stmts)) -> case evalExpression e of
     Object (Boolean True) -> evalBlock block
     _ -> evalStatements stmts
+
+{-evalConcatenation :: Expression -> Expression -> Object
+evalConcatenation left right = case (evalExpression left, evalExpression right) of
+  (Object (StringLit left'), Object (StringLit right')) -> Object (StringLit (left' ++ right'))
+  _ -> Object Null -}

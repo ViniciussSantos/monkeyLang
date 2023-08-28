@@ -24,12 +24,15 @@ import Text.Megaparsec (
   sepBy,
   sepEndBy,
   withRecovery,
-  (<|>), 
- ) 
+  (<|>),
+  many,
+  try,
+ )
 
 import Token (
   Token (..),
  )
+import Eval.Object (ObjectType(StringLit))
 
 type Parser = Parsec Void [Token]
 
@@ -100,6 +103,9 @@ parseExpression = makeExprParser parseTerm table
       , binary (parseToken NotEqual) InequalityExpression
       , binary (parseToken LessThan) LessThanExpression
       , binary (parseToken GreaterThan) GreaterThanExpression
+      ]
+    , -- concatanation operator
+      [ binary (parseToken Plus) ConcatExpression
       ]
     ]
   binary :: (Functor m) => m b -> (a -> a -> a) -> Operator m a
@@ -187,4 +193,4 @@ parseString =  do
     _ -> fail "Expected StringLiteral"
  where
   isString (Str _) = True
-  isString _ = False
+  isString _ = False 
