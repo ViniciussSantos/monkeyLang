@@ -1,16 +1,18 @@
 module Parser.Parser (parsing)
 where
 
-import Ast (
-  Ast,
+import Control.Monad.Combinators.Expr (Operator (..), makeExprParser)
+import Data.Void (Void)
+import Lexer.Token (
+  Token (..),
+ )
+import Parser.Ast (
   Block (..),
   Expression (..),
   Identifier (..),
   Program (..),
   Statement (..),
  )
-import Control.Monad.Combinators.Expr (Operator (..), makeExprParser)
-import Data.Void (Void)
 import Text.Megaparsec (
   Parsec,
   anySingle,
@@ -25,13 +27,10 @@ import Text.Megaparsec (
   withRecovery,
   (<|>),
  )
-import Token (
-  Token (..),
- )
 
 type Parser = Parsec Void [Token]
 
-parsing :: Ast
+parsing :: [Token] -> Program
 parsing ts = case parse parseProgram "" ts of
   Left err -> error $ show err
   Right program -> program

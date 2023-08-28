@@ -1,10 +1,10 @@
-import Ast (Block (..), Expression (..), Identifier (..), Program (Program), Statement (..))
 import Eval.Eval (eval)
 import Lexer.Lexer (tokenize)
+import Lexer.Token (Token (..))
+import Parser.Ast (Block (..), Expression (..), Identifier (..), Program (Program), Statement (..))
 import Parser.Parser (parsing)
 import Test.Tasty (TestTree, defaultMain, testGroup)
 import Test.Tasty.HUnit (assertEqual, testCase)
-import Token (Token (..))
 
 main :: IO ()
 main = do
@@ -67,4 +67,14 @@ evalTests =
     , testCase "eval != boolean expression" (assertEqual "should be false" "false" (interpret "1!=1;"))
     , testCase "eval true == true boolean expression" (assertEqual "should be true" "true" (interpret "true==true;"))
     , testCase "eval true != true boolean expression" (assertEqual "should be false" "false" (interpret "true!=true;"))
+    , testCase "eval true == false boolean expression" (assertEqual "should be false" "false" (interpret "true==false;"))
+    , testCase "eval true != false boolean expression" (assertEqual "should be true" "true" (interpret "true!=false;"))
+    , testCase "eval false == false boolean expression" (assertEqual "should be true" "true" (interpret "false==false;"))
+    , testCase "eval false != false boolean expression" (assertEqual "should be false" "false" (interpret "false!=false;"))
+    , testCase "eval if" (assertEqual "should be 1" "1" (interpret "if (true) {1;};"))
+    , testCase "eval if" (assertEqual "should be null" "null" (interpret "if (false) {1;};"))
+    , testCase "eval if else" (assertEqual "should be 1" "1" (interpret "if (true) {1;} else {2;};"))
+    , testCase "eval if else" (assertEqual "should be 2" "2" (interpret "if (false) {1;} else {2;};"))
+    , testCase "eval if else" (assertEqual "should be 1" "1" (interpret "if (2>1) {1;} else {2;};"))
+    , testCase "eval if else" (assertEqual "should be 2" "2" (interpret "if (2<1) {1;} else {2;};"))
     ]

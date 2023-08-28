@@ -1,5 +1,4 @@
-module Token (
-  Tokenizer,
+module Lexer.Token (
   Token (..),
   isIdentifierChar,
   identifierToken,
@@ -8,8 +7,6 @@ where
 
 import Data.Char (isLetter)
 
--- tipo para function de tokenizacao
-type Tokenizer = String -> [Token]
 
 data Token
   = Illegal -- Token Invalido
