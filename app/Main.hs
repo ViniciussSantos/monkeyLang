@@ -4,7 +4,6 @@ import Eval.Eval (eval)
 import Lexer.Lexer (tokenize)
 import Parser.Parser (parsing)
 import System.IO (hFlush, stdout)
-import Eval.Object (Object)
 
 prompt :: String -> IO String
 prompt what = do
@@ -19,3 +18,4 @@ main :: IO ()
 main = do
   expression <- prompt ">> "
   print $ interpret expression
+  main
